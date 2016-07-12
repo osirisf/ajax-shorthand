@@ -53,7 +53,6 @@ function setAjax(formElement,callback) {
       default:
         var url = formElement.action + "&";
         var inputs = formElement.querySelectorAll("input, select");
-        console.log(inputs.length);
         for(var i = 0; i < inputs.length; ++i) {
           if(inputs[i].type == "submit")
             continue;
@@ -61,7 +60,6 @@ function setAjax(formElement,callback) {
           if(i < inputs.length - 2)
             url += "&";
         }
-        console.log(url);
         get(url,callback);
     }
   }
