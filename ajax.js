@@ -1,6 +1,3 @@
-
-
-
 function get(url,callback) {
     var client = new XMLHttpRequest();
     client.onreadystatechange = function() {
@@ -26,14 +23,21 @@ function post(formElement,callback) {
   var elements = formElement.querySelectorAll("input, select, textarea");
   for (var i = 0; i < elements.length; i++) {
     var element = elements[i];
+
     if(element.type == "file") {
       var files = element.files;
       for (var j = 0; j < files.length; j++) {
         var file = files[j]
         data.append(element.name,file);
       }
-    } else
-      data.append(element.name,element.value);
+    } else {
+      if(element.type == "radio") {
+        if(element.checked) {
+          console.log("Radio checked");
+          data.append(element.name,element.value);
+        }
+      } else data.append(element.name,element.value);
+    }
   }
 
   client.open("POST",formElement.action);
@@ -41,6 +45,7 @@ function post(formElement,callback) {
 }
 
 function setAjax(formElement,callback) {
+  if(!formElement) return;	
   formElement.onsubmit = function(event) {
     event.preventDefault();
     event.stopPropagation();
@@ -64,3 +69,13 @@ function setAjax(formElement,callback) {
     }
   }
 }
+
+function makeAjaxAnchor(anchor,callback) {
+    anchor.onclick = function(event) {
+      event.preventDefault();
+      event.stopPropagation();
+
+      get(anchor.href,callback);
+
+    }
+  }
